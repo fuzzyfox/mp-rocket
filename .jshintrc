@@ -1,0 +1,11 @@
+{
+  "strict": true,
+  "curly": true,
+  "newcap": true,
+  "quotmark": "single",
+  "camelcase": true,
+  "undef": true,
+  "eqeqeq": true,
+  "browser": true,
+  "node": true
+}

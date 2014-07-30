@@ -1,0 +1,12 @@
+### https://raw.github.com/github/gitignore/7b684c28663c20a287d67b2879db83957391c23b/Yeoman.gitignore
+
+node_modules/
+bower_components/
+*.log
+
+build/
+dist/
+
+## project specific
+asset/vendor/
+validation-status.json

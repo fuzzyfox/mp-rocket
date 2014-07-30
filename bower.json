@@ -1,0 +1,25 @@
+{
+  "name": "mp-rocket",
+  "version": "0.0.0",
+  "authors": [
+    "William Duyck <fuzzyfox0@gmail.com>"
+  ],
+  "description": "Maker Party Rocket Whimsy",
+  "keywords": [
+    "makerparty",
+    "animation",
+    "svg"
+  ],
+  "license": "MPL-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": true,
+  "dependencies": {
+    "snap.svg": "~0.3.0"
+  }
+}
