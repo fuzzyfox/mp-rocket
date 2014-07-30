@@ -20,6 +20,7 @@ module.exports = function( grunt ) {
       options: {
         files: [ 'package.json', 'bower.json' ],
         commitMessage: 'version bump to v%VERSION%',
+        commitFiles: [ 'package.json', 'bower.json' ],
         push: false
       }
     },
