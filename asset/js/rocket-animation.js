@@ -1,6 +1,13 @@
 /* global Snap, mina */
 'use strict';
 
+/**
+ * Generate a single blob of smoke
+ *
+ * @param  {Number} x x-coord as base
+ * @param  {Number} y y-coord as base
+ * @return {Snap}     new snap Element (the blob)
+ */
 function smokeGenerator( x, y ) {
   // jitter the input a little
   x = x + ( ( Math.random() * 100 ) - 50 );
@@ -9,7 +16,7 @@ function smokeGenerator( x, y ) {
   var size = Math.random() * 60;
   var fadeDuration = ( Math.random() * 1500 ) + 400;
 
-  var smokeCircle = new Snap( '#smoke' ).paper.circle( x, y, size ).attr({
+  var smokeCircle = new Snap( '#smoke-factory' ).paper.circle( x, y, size ).attr({
     fill: '#ccc',
     id: 'node' + (new Date()).valueOf()
   });
@@ -22,9 +29,13 @@ function smokeGenerator( x, y ) {
   return smokeCircle;
 }
 
-var snap = new Snap( '#rocket-animation' );
+// get animation parent node
+var wrapper = new Snap( '#rocket-animation' );
 
-Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
+// inject smoke factory svg (used by smokeGenerator)
+var smokeFactory = document.createElement( 'svg' );
+
+Snap.load( wrapper.node.dataset.baseFile , function( file ) {
   // move rocket off canvas (mostly)
   var rocketLayer = file.select( '#rocket-layer' ).transform( 'T-400 0' );
   var bunting = file.select( '#bunting' );
@@ -32,7 +43,7 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
   var launchPad = file.select( '#launch-pad' );
   var rocket = rocketLayer.select( '#rocket' );
 
-  snap.append( file );
+  wrapper.append( file );
 
   function resetAnimation(){
     rocketLayer.transform( 'T-1000 0 R0 S1' );
@@ -63,9 +74,7 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
         // tower fall away
         launchTower.animate( {
           transform: 'T-50 100 R-40 500 500 S0.5'
-        }, 1000 , mina.ease, function() {
-          // launchTower = this.remove();
-        });
+        }, 1000 , mina.ease );
 
         // perception of rocket moving away from ground
         launchPad.animate({
@@ -74,20 +83,17 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
         // make ground fall away
         bunting.animate({
           transform: 'T0 50'
-        }, 2000, function() {
-          // bunting = this.remove();
-        });
+        }, 2000 );
 
         // rocket lift off
         rocket.animate({
           transform: 'T50 -100 R60 S0.7'
-        }, 2000, mina.ease, function() {
+        }, 2000, mina.easein, function() {
 
           // ground disappear
           launchPad.animate({
             transform: 'T-500 0 S0.2'
           }, 500, function() {
-            // launchPad = this.remove();
             clearInterval( smokeTakeOffInterval );
           });
 
@@ -104,7 +110,6 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
                 transform: 'T2000 -100 R90 S1.4'
               }, 1000, function() {
                 clearInterval( smokeFlyByInterval );
-                // rocket = this.remove();
 
                 setTimeout( resetAnimation, 1000 );
                 setTimeout( loop, 10000 );
