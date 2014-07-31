@@ -39,6 +39,52 @@ module.exports = function( grunt ) {
       }
     },
 
+    // copy svg to dist folder
+    copy: {
+      svg: {
+        src: 'asset/svg/rocket-scene.svg',
+        dest: 'dist/rocket-scene.svg'
+      },
+      scripts: {
+        src: 'asset/js/rocket-animation.js',
+        dest: 'dist/rocket-animation.js'
+      },
+      html: {
+        src: 'index.html',
+        dest: 'dist/index.html'
+      }
+    },
+
+    // gh pages this thing ;)
+    'gh-pages': {
+      options: {
+        base: 'dist'
+      },
+      src: '**/*'
+    },
+
+    // compress for dist
+    uglify: {
+      default: {
+        options: {
+          sourceMap: true,
+          compress: true
+        },
+        files: {
+          'dist/rocket-animation.min.js': [ 'asset/js/**/*.js' ]
+        }
+      },
+      complete: {
+        options: {
+          sourceMap: true,
+          compress: true
+        },
+        files: {
+          'dist/rocket-animation.complete.min.js': [ 'asset/vendor/snap.svg/dist/snap.svg.js', 'asset/js/**/*.js' ]
+        }
+      }
+    },
+
     // server for testing stuffs
     connect: {
       server: {
@@ -69,13 +115,18 @@ module.exports = function( grunt ) {
 	});
 
   // load tasks
+  grunt.loadNpmTasks( 'grunt-contrib-copy' );
   grunt.loadNpmTasks( 'grunt-contrib-watch' );
   grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
   grunt.loadNpmTasks( 'grunt-contrib-connect' );
   grunt.loadNpmTasks( 'grunt-bump' );
+  grunt.loadNpmTasks( 'grunt-gh-pages' );
   grunt.loadNpmTasks( 'grunt-html-validation' );
 
   // register tasks
   grunt.registerTask( 'default', [ 'jshint', 'validation:svg', 'connect:server', 'watch:scripts' ] );
   grunt.registerTask( 'test', [ 'jshint', 'validation:svg' ] );
+  grunt.registerTask( 'build', [ 'test', 'uglify', 'copy' ] );
+  grunt.registerTask( 'dist', [ 'build', 'gh-pages' ] );
 };
