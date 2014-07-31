@@ -1,6 +1,6 @@
 {
   "name": "mp-rocket",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Maker Party Rocket Whimsy",
   "scripts": {
     "test": "grunt test"
