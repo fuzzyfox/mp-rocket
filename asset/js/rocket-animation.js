@@ -29,7 +29,7 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
   var rocketLayer = file.select( '#rocket-layer' ).transform( 'T-400 0' );
   var bunting = file.select( '#bunting' );
   var launchTower = rocketLayer.select( '#launch-tower' );
-  var launchPad = rocketLayer.select( '#launch-pad' );
+  var launchPad = file.select( '#launch-pad' );
   var rocket = rocketLayer.select( '#rocket' );
 
   snap.append( file );
@@ -37,11 +37,14 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
   function resetAnimation(){
     rocketLayer.transform( 'T-1000 0 R0 S1' );
     launchTower.transform( 'T0 0 R0 S1' );
-    launchPad.transform( 'T0 0 R0 S1' );
     rocket.transform( 'T0 0 R0 S1' );
+
+    launchPad.animate({
+      transform: 'T0 0 R0 S1'
+    }, 5000);
     bunting.animate({
       transform: 'T0 0 R0 S1'
-    }, 700);
+    }, 5000);
     rocketLayer.animate({
       transform: 'T-400 0 R0 S1'
     }, 5000);
@@ -68,10 +71,16 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
         launchPad.animate({
           transform: 'T-200 0 S0.7'
         }, 2000 );
+        // make ground fall away
+        bunting.animate({
+          transform: 'T0 50'
+        }, 2000, function() {
+          // bunting = this.remove();
+        });
 
         // rocket lift off
         rocket.animate({
-          transform: 'T50 0 R60 S0.7'
+          transform: 'T50 -100 R60 S0.7'
         }, 2000, mina.ease, function() {
 
           // ground disappear
@@ -101,13 +110,6 @@ Snap.load( 'asset/svg/rocket-scene.svg', function( file ) {
                 setTimeout( loop, 10000 );
               });
             }, 1200 );
-          });
-
-          // make ground fall away
-          bunting.animate({
-            transform: 'T0 50'
-          }, 2000, function() {
-            // bunting = this.remove();
           });
         });
       }, 1000 );
